@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import { Input } from "./Components/Input";
 
 function App() {
   const [items, setItems] = useState<string[]>([]);
@@ -22,16 +23,10 @@ function App() {
       <div className="w-[350px] p-5 rounded-lg shadow-lg">
         <h1 className="text-slate-600 text-5xl font-bold mb-5">TODO</h1>
         <form className="mb-5" onSubmit={handleSubmit}>
-          <input
-            className="w-full p-2 rounded-sm mb-2 border"
-            type="text"
-            placeholder="Enter item"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-          />
+          <Input inputValue={inputValue} setInputValue={setInputValue} />
           <button
             type="submit"
-            className="w-full bg-slate-600  p-2 rounded-sm hover:bg-slate-700"
+            className="w-full bg-slate-600 p-2 rounded-sm hover:bg-slate-700"
           >
             Add
           </button>
