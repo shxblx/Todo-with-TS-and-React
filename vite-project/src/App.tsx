@@ -1,38 +1,64 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [items, setItems] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState<string>("");
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (inputValue.trim() !== "") {
+      setItems((prev) => [...prev, inputValue]);
+      setInputValue("");
+    }
+  };
+
+  const handleDelete = (index: number) => {
+    setItems((prev) => prev.filter((_, i) => i !== index));
+  };
 
   return (
-    <div className="h-[100vh] flex-col justify-center items-center">
-      <div className="w=[350px]">
-        <form className="mb-5">
-          <input className="w-full p-2 rounded-sm mb-2" type="text" />
-          <button type="submit" className="bg-gray-700 w-full p-2">
+    <div className="h-screen flex flex-col justify-center items-center font-sans">
+      <div className="w-[350px] p-5 rounded-lg shadow-lg">
+        <h1 className="text-slate-600 text-5xl font-bold mb-5">TODO</h1>
+        <form className="mb-5" onSubmit={handleSubmit}>
+          <input
+            className="w-full p-2 rounded-sm mb-2 border"
+            type="text"
+            placeholder="Enter item"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="w-full bg-slate-600  p-2 rounded-sm hover:bg-slate-700"
+          >
             Add
           </button>
         </form>
-        <div className="h-52 overflow-y-auto">
-          <div className="flex justify-between items-center border border-slate-600 pl-2 mb-2 mr-1 py-2">
-            <p>JS</p>
-            <button>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-              >
-                <path
-                  d="M3 6h18v2H3zM5 8h14v14H5V8zm4 2v10h2V10H9zm4 0v10h2V10h-2z"
-                  fill="currentColor"
-                />
-                <path d="M8 4h8v2H8z" fill="currentColor" />
-              </svg>
-            </button>
-          </div>
+        <div className="h-52 overflow-y-auto custom-scrollbar">
+          {items.map((data, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center text-white bg-slate-600 border border-slate-600 px-2 mb-2 py-2 rounded-sm"
+            >
+              <p className="font-medium">{data}</p>
+              <button onClick={() => handleDelete(index)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  className="text-white-600 hover:text-slate-300"
+                >
+                  <path
+                    d="M3 6h18v2H3zM5 8h14v14H5V8zm4 0v14h2V8H9zm4 0v14h2V8h-2z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>
